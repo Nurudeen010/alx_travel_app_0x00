@@ -49,10 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'corsheaders',
+    'corsheaders',
     'drf_yasg',
     'rest_framework',
-    'alx_travel_app.listings',
+    'listings',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +87,7 @@ CORS_ALLOW_HEADERS = (
 )
 
 
-ROOT_URLCONF = 'alx_travel_app.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
@@ -105,7 +105,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'alx_travel_app.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database

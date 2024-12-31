@@ -12,19 +12,39 @@ class Listing(models.Model):
     updated_at = models.TimeField(auto_now_add=True)
 
 class Booking(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('canceled', 'Canceled'),
+    ]
+
+
     booking_id = models.IntegerField(primary_key=True)
-    listing_id = models.ForeignKey(Listing, on_delete=models.SET_NULL)
+    listing_id = models.ForeignKey(Listing, on_delete=models.SET_NULL, null=True)
     user_id = models.ForeignKey(user, on_delete=models.CASCADE)
     start_date = models.TimeField(unique='DD-MM-YYYY')
     end_date = models.TimeField(unique='DD-MM-YYYY')
-    total_price = models.DecimalField()
-    status = models.enums('pending', 'confirmed', 'canceled')
+    total_price = models.DecimalField(max_digits=6, decimal_places=2)
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pending',
+    )
     created_at = models.TimeField(auto_now=True)
 
 class Review(models.Model):
+    class Ratings(models.IntegerChoices):
+        ONE = 1, '1 - Poor'
+        TWO = 2, '2 - Fair'
+        THREE = 3, '3 - Good'
+        FOUR = 4, '4 - Very Good'
+        FIVE = 5, '5 - Excellent'
     review_id = models.IntegerField(primary_key=True)
     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(user, on_delete=models.SET_NULL)
-    rating = models.IntegerChoices(1,2,3,4,5)
+    user_id = models.ForeignKey(user, on_delete=models.SET_NULL, null=True)
+    rating = models.IntegerField(
+        choices=Ratings.choices,
+        default=Ratings.THREE,  # Default to "3 - Good"
+    )
     comment = models.TextField()
     created_at = models.TimeField(auto_now_add=True)
